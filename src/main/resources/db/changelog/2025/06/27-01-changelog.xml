@@ -55,9 +55,7 @@
             <column name="srcsw_version" type="VARCHAR(255)"/>
             <column name="master_src_mac" type="VARCHAR(255)"/>
             <column name="src_mac" type="VARCHAR(255)"/>
-            <column name="srcserver" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="srcserver" type="BIGINT"/>
         </createTable>
     </changeSet>
 

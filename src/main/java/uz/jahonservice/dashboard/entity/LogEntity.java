@@ -66,13 +66,13 @@ public class LogEntity {
 
 
     //todo: sessiya va siyosat tafsilotlari
-    private long sessionId;     // sessiya id
+    private Long sessionId;     // sessiya id
 
-    private long proto;         // protokol
+    private Long proto;         // protokol
 
     private String action;      // sessiya holati
 
-    private long policyId;      // ruxsat berilgan siyosat(policy) identifikatori
+    private Long policyId;      // ruxsat berilgan siyosat(policy) identifikatori
 
     private String policyType;  // siyosat turi
 
@@ -88,17 +88,17 @@ public class LogEntity {
 
     private String transIP;    // nat bergan ip manzil
 
-    private long transport;    // tashqi port, nat began port
+    private Long transport;    // tashqi port, nat began port
 
-    private long duration;     // sessiya davomiyligi sekundlarda
+    private Long duration;     // sessiya davomiyligi sekundlarda
 
-    private long sentByte;     // klient serverga yuborgan bayt
+    private Long sentByte;     // klient serverga yuborgan bayt
 
-    private long rcvdbyte;     // recieved byte serverdan klient olgan bayt
+    private Long rcvdbyte;     // recieved byte serverdan klient olgan bayt
 
-    private long sentPkt;      // yuborilgan paketlar soni
+    private Long sentPkt;      // yuborilgan paketlar soni
 
-    private long rcvdPkt;      // qabul qilingan paketlar
+    private Long rcvdPkt;      // qabul qilingan paketlar
 
 
     //todo: qurilma identifikatsiyasi
@@ -118,5 +118,5 @@ public class LogEntity {
 
     private String srcMac;       // qurilma mac manzili
 
-    private long srcserver;      // serverflag qurilma qanday ravishda ishlayotganini kursatadi 1-server 0-client
+    private Long srcserver;      // serverflag qurilma qanday ravishda ishlayotganini kursatadi 1-server 0-client
 }
