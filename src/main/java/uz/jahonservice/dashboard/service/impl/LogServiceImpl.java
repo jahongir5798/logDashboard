@@ -16,6 +16,7 @@ import uz.jahonservice.dashboard.exception.DatabaseException;
 import uz.jahonservice.dashboard.repository.LogRepository;
 import uz.jahonservice.dashboard.service.LogService;
 import uz.jahonservice.dashboard.service.mapper.LogMapper;
+import uz.jahonservice.dashboard.service.validation.LogParser;
 import uz.jahonservice.dashboard.service.validation.LogValidator;
 
 import java.sql.Date;
@@ -34,32 +35,61 @@ public class LogServiceImpl implements LogService {
     private final LogRepository logRepository;
     private final LogValidator logValidator;
     private final LogMapper logMapper;
+    private final LogParser logParser;
 
     @Override
     public ApiResponse<Void> saveLogFromFile(MultipartFile file) {
         return null;
     }
 
+//    @Override
+//    public ApiResponse<LogDto> uploadFromText(String text) {
+//        LogEntity logEntity = logValidator.textToLogEntity(new LogEntity(), text);
+//        try {
+////            logRepository.save(logEntity);
+//            return ApiResponse.<LogDto>builder()
+//                    .code(0)
+//                    .message("Successfully saved log")
+//                    .success(true)
+//                    .log(
+//                            logMapper.toDto(
+//                                    logRepository.
+//                                            save(
+//                                                    logEntity
+//                                            )
+//                            )
+//                    )
+//                    .build();
+//        } catch (Exception e) {
+//            throw new DatabaseException("Database exception while saving long from text");
+//        }
+//    }
+
     @Override
     public ApiResponse<LogDto> uploadFromText(String text) {
-        LogEntity logEntity = logValidator.textToLogEntity(new LogEntity(), text);
+
+        LogEntity logEntity = new LogEntity();
+
+        Map<String, Object> keyValueLog = logParser.parseLog(text);
+
+        logEntity = logParser.toLogEntity(keyValueLog, logEntity);
+
         try {
-//            logRepository.save(logEntity);
+
             return ApiResponse.<LogDto>builder()
                     .code(0)
-                    .message("Successfully saved log")
+                    .message("Log uploaded successfully")
                     .success(true)
                     .log(
                             logMapper.toDto(
-                                    logRepository.
-                                            save(
-                                                    logEntity
-                                            )
+                                    logRepository.save(
+                                            logEntity
+                                    )
                             )
                     )
                     .build();
         } catch (Exception e) {
-            throw new DatabaseException("Database exception while saving long from text");
+            throw new DatabaseException("Database error while saving log" + e.getMessage());
         }
     }
 
@@ -145,7 +175,7 @@ public class LogServiceImpl implements LogService {
                     .success(true)
                     .log(map)
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new DatabaseException("Database exception while getting dst country");
         }
     }
@@ -162,7 +192,7 @@ public class LogServiceImpl implements LogService {
                     .success(true)
                     .log(response)
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new DatabaseException("Database exception while getting sorted list ip");
         }
 

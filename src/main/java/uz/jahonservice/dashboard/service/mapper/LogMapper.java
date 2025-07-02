@@ -53,7 +53,7 @@ public  class LogMapper {
         logDto.setAppCat(logEntity.getAppCat());
         logDto.setSrchwVendor(logEntity.getSrchwVendor());
         logDto.setOsName(logEntity.getOsName());
-        logDto.setSrcsVersion(logEntity.getSrcsVersion());
+        logDto.setSrcswVersion(logEntity.getSrcswVersion());
         logDto.setMasterSrcMac(logEntity.getMasterSrcMac());
         logDto.setSrcMac(logEntity.getSrcMac());
         logDto.setSrcserver(logEntity.getSrcserver());

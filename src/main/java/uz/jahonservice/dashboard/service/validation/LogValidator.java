@@ -1,6 +1,5 @@
 package uz.jahonservice.dashboard.service.validation;
 
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.stereotype.Component;
 import uz.jahonservice.dashboard.entity.LogEntity;
 
@@ -180,7 +179,7 @@ public class LogValidator {
         logEntity.setOsName(extractString(split[38]));
 
         //todo: qurilma versiyasi joylandi index 39
-        logEntity.setSrcsVersion(extractString(split[39]));
+        logEntity.setSrcswVersion(extractString(split[39]));
 
         //todo: master sourse mac joylandi index 40
         logEntity.setMasterSrcMac(extractString(split[40]));

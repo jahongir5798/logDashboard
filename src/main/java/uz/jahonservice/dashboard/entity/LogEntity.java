@@ -1,7 +1,6 @@
 package uz.jahonservice.dashboard.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -40,6 +39,8 @@ public class LogEntity {
 
     //todo:  tarmoq interfeysi manzillari
     private String vd;        //virtual domen
+
+    private Long identifier;
 
     private String srcIP;     // manba IP(sourse IP)
 
@@ -103,11 +104,15 @@ public class LogEntity {
     //todo: qurilma identifikatsiyasi
     private String appCat;    // ilova kategoriyasi
 
+    private String utmAction;
+
+    private Long countWeb;
+
     private String srchwVendor; // qurilma ishlab chiqaruvchi
 
     private String osName;      //qurilma operatsion tizii
 
-    private String srcsVersion;  // qurilma versiyasi
+    private String srcswVersion;  // qurilma versiyasi
 
     private String masterSrcMac; // qaysidir max manzil
 

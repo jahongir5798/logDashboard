@@ -12,15 +12,14 @@
             </column>
             <column name="date" type="DATE"/>
             <column name="time" type="TIME"/>
-            <column name="event_time" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="event_time" type="BIGINT"/>
             <column name="tz" type="VARCHAR(255)"/>
             <column name="log_id" type="VARCHAR(255)"/>
             <column name="type" type="VARCHAR(255)"/>
             <column name="sub_type" type="VARCHAR(255)"/>
             <column name="level" type="VARCHAR(255)"/>
             <column name="vd" type="VARCHAR(255)"/>
+            <column name="identifier" type="BIGINT"/>
             <column name="srcip" type="VARCHAR(255)"/>
             <column name="src_name" type="VARCHAR(255)"/>
             <column name="src_port" type="BIGINT"/>
@@ -32,44 +31,28 @@
             <column name="dst_intf_role" type="VARCHAR(255)"/>
             <column name="src_country" type="VARCHAR(255)"/>
             <column name="dst_country" type="VARCHAR(255)"/>
-            <column name="session_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="proto" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="session_id" type="BIGINT"/>
+            <column name="proto" type="BIGINT"/>
             <column name="action" type="VARCHAR(255)"/>
-            <column name="policy_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="policy_id" type="BIGINT"/>
             <column name="policy_type" type="VARCHAR(255)"/>
             <column name="poluuid" type="VARCHAR(255)"/>
             <column name="policy_name" type="VARCHAR(255)"/>
             <column name="service" type="VARCHAR(255)"/>
             <column name="tran_disp" type="VARCHAR(255)"/>
             <column name="transip" type="VARCHAR(255)"/>
-            <column name="transport" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="duration" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="sent_byte" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="rcvdbyte" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="sent_pkt" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="rcvd_pkt" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="transport" type="BIGINT"/>
+            <column name="duration" type="BIGINT"/>
+            <column name="sent_byte" type="BIGINT"/>
+            <column name="rcvdbyte" type="BIGINT"/>
+            <column name="sent_pkt" type="BIGINT"/>
+            <column name="rcvd_pkt" type="BIGINT"/>
             <column name="app_cat" type="VARCHAR(255)"/>
+            <column name="utm_action" type="VARCHAR(255)"/>
+            <column name="count_web" type="BIGINT"/>
             <column name="srchw_vendor" type="VARCHAR(255)"/>
             <column name="os_name" type="VARCHAR(255)"/>
-            <column name="srcs_version" type="VARCHAR(255)"/>
+            <column name="srcsw_version" type="VARCHAR(255)"/>
             <column name="master_src_mac" type="VARCHAR(255)"/>
             <column name="src_mac" type="VARCHAR(255)"/>
             <column name="srcserver" type="BIGINT">

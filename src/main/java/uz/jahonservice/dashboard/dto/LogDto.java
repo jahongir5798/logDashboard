@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -37,6 +36,8 @@ public class LogDto {
 
     //todo:  tarmoq interfeysi manzillari
     private String vd;        //virtual domen
+
+    private Long identifier;
 
     @Pattern(regexp = "(\\b25[0-5]|\\b2[0-4][0-9]|\\b[01]?[0-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}")
     private String srcIP;     // manba IP(sourse IP)
@@ -105,11 +106,16 @@ public class LogDto {
     //todo: qurilma identifikatsiyasi
     private String appCat;    // ilova kategoriyasi
 
+    private String utmAction;
+
+    private Long countWeb;
+
+
     private String srchwVendor; // qurilma ishlab chiqaruvchi
 
     private String osName;      //qurilma operatsion tizii
 
-    private String srcsVersion;  // qurilma versiyasi
+    private String srcswVersion;  // qurilma versiyasi
 
     private String masterSrcMac; // qaysidir max manzil
 
@@ -117,5 +123,7 @@ public class LogDto {
     private String srcMac;       // qurilma mac manzili
 
     private long srcserver;      // serverflag qurilma qanday ravishda ishlayotganini kursatadi 1-server 0-client
+
+    //todo: utmref
 
 }
