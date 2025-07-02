@@ -43,6 +43,19 @@ public interface LogRepository extends JpaRepository<LogEntity, UUID> {
 
     @Query(
             value = """
+                    select service, count(*)
+                    from log
+                    where date between :startDate and :endDate
+                    group by service
+                    """, nativeQuery = true
+    )
+    List<Object[]> servicesCount(
+            @Param("startDate") Timestamp startDate,
+            @Param("endDate") Timestamp endDate
+    );
+
+    @Query(
+            value = """
                     select log.dst_country, count(*)
                     from log
                     where date between :startDate and :endDate

@@ -3,20 +3,16 @@ package uz.jahonservice.dashboard.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import uz.jahonservice.dashboard.dto.LogDto;
 import uz.jahonservice.dashboard.dto.PageRequestDto;
 import uz.jahonservice.dashboard.dto.response.ApiResponse;
-import uz.jahonservice.dashboard.dto.response.PageResponse;
-import uz.jahonservice.dashboard.entity.LogEntity;
 import uz.jahonservice.dashboard.repository.LogRepository;
 import uz.jahonservice.dashboard.service.LogService;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -78,6 +74,17 @@ public class LogController {
         ApiResponse<Map<Date, Integer>> dailyLog = logService.getDailyLog(startDate, endDate);
         log.info("log control get daily logs response");
         return dailyLog;
+    }
+
+    @GetMapping("get-services-count")
+    public ApiResponse<Map<String, Integer>> getServicesCount(
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate
+    ){
+        log.info("log control get-services-count invoked");
+        ApiResponse<Map<String, Integer>> serviceCount = logService.getServiceCount(startDate, endDate);
+        log.info("log control get-services-count response");
+        return serviceCount;
     }
 
 

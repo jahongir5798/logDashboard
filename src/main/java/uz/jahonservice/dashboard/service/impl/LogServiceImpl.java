@@ -160,6 +160,28 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
+    public ApiResponse<Map<String, Integer>> getServiceCount(LocalDate startDate, LocalDate endDate) {
+        Timestamp startTime = Timestamp.valueOf(startDate.atStartOfDay());
+        Timestamp endTime = Timestamp.valueOf(endDate.atStartOfDay().plusHours(23).minusMinutes(59).plusSeconds(59));
+        try {
+            List<Object[]> objects = this.logRepository.servicesCount(startTime, endTime);
+            Map<String, Integer> map = new HashMap<>();
+            for (Object[] row : objects) {
+                map.put((String) row[0], ((Number) row[1]).intValue());
+            }
+
+            return ApiResponse.<Map<String, Integer>>builder()
+                    .code(0)
+                    .message("Successfully retrieved all logs")
+                    .success(true)
+                    .log(map)
+                    .build();
+        } catch (Exception e) {
+            throw new DatabaseException("Database exception while getting daily log");
+        }
+    }
+
+    @Override
     public ApiResponse<Map<String, Integer>> getDstCountry(LocalDate start, LocalDate end) {
         try {
             Timestamp startTime = Timestamp.valueOf(start.atStartOfDay());
