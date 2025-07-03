@@ -8,10 +8,11 @@ import uz.jahonservice.dashboard.dto.response.ApiResponse;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 public interface LogService {
-    ApiResponse<Void> saveLogFromFile(MultipartFile file);
+    ApiResponse<List<LogDto >> saveLogFromFile(MultipartFile file);
 
     ApiResponse<LogDto> uploadFromText(String text);
 

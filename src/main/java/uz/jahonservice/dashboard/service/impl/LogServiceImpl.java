@@ -19,13 +19,20 @@ import uz.jahonservice.dashboard.service.mapper.LogMapper;
 import uz.jahonservice.dashboard.service.validation.LogParser;
 import uz.jahonservice.dashboard.service.validation.LogValidator;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,8 +45,63 @@ public class LogServiceImpl implements LogService {
     private final LogParser logParser;
 
     @Override
-    public ApiResponse<Void> saveLogFromFile(MultipartFile file) {
-        return null;
+    public ApiResponse<List<LogDto>> saveLogFromFile(MultipartFile file) {
+        try {
+            List<String> lines = new BufferedReader(new InputStreamReader(file.getInputStream()))
+                    .lines()
+                    .toList();
+            List<String> logs = new ArrayList<>();
+            List<LogDto> logDtos = new ArrayList<>();
+
+            StringBuilder currentLog = new StringBuilder();
+
+            for (String line : lines) {
+                if (line.startsWith("date=")) {
+                    if (!currentLog.isEmpty()) {
+                        logs.add(currentLog.toString());
+                        currentLog.setLength(0);
+                    }
+                }
+                currentLog.append(line).append(" ");
+            }
+
+            if (!currentLog.isEmpty()) {
+                logs.add(currentLog.toString());
+            }
+
+            for (int i = 0; i < logs.size(); i++) {
+                LogEntity logEntity = new LogEntity();
+//                System.out.println("Log #" + (i + 1));
+//                System.out.println(logs.get(i));
+//                System.out.println("----------------------------------------------------");
+                logDtos.add(
+                        logMapper.toDto(
+                                logRepository.save(
+                                        logParser.toLogEntity(
+                                                logParser.parseLog(
+                                                        logs.get(i)), logEntity
+                                        )
+                                )
+                        )
+                );
+            }
+
+
+            return ApiResponse.<List<LogDto>>builder()
+                    .code(0)
+                    .message("OK")
+                    .success(true)
+                    .log(logDtos)
+                    .build();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ApiResponse.<List<LogDto>>builder()
+                .code(-1)
+                .message("ERROR")
+                .success(false)
+                .build();
     }
 
 //    @Override
@@ -63,7 +125,7 @@ public class LogServiceImpl implements LogService {
 //        } catch (Exception e) {
 //            throw new DatabaseException("Database exception while saving long from text");
 //        }
-//    }
+//    }    //
 
     @Override
     public ApiResponse<LogDto> uploadFromText(String text) {

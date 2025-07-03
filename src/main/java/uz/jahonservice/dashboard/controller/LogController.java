@@ -13,6 +13,7 @@ import uz.jahonservice.dashboard.service.LogService;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -26,11 +27,11 @@ public class LogController {
 
     /*todo:log qabul qilib olish ustida amallar bajarish kerak(qidirish, filtrlash)*/
     @PostMapping("upload/fromFile")
-    public ApiResponse<Void> saveLogFromFile(
+    public ApiResponse<List<LogDto >> saveLogFromFile(
             @RequestParam("file") MultipartFile file
     ) {
         log.info("log controller upload from file invoked");
-        ApiResponse<Void> response = logService.saveLogFromFile(file);
+        ApiResponse<List<LogDto>> response = logService.saveLogFromFile(file);
         log.info("log controller upload from file response");
         return response;
     }

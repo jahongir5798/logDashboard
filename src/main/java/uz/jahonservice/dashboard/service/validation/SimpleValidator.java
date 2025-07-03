@@ -1,9 +1,14 @@
 package uz.jahonservice.dashboard.service.validation;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleValidator {
     public static void main(String[] args) {
-
-        String log1 = "date=2025-06-27 time=14:24:06 eventtime=1751016240480258276 tz=\"+0500\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" identifier=0 srcintf=\"unknown-0\" srcintfrole=\"undefined\" dstip=ff02::16 dstintf=\"unknown-0\" dstintfrole=\"undefined\" sessionid=33 proto=58 action=\"accept\" policyid=0 policytype=\"policy\" service=\"icmp6/143/0\" trandisp=\"noop\" duration=0 sentbyte=0 rcvdbyte=0 sentpkt=0 rcvdpkt=0 appcat=\"unscanned\"";
+       /* String log1 = "date=2025-06-27 time=14:24:06 eventtime=1751016240480258276 tz=\"+0500\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" identifier=0 srcintf=\"unknown-0\" srcintfrole=\"undefined\" dstip=ff02::16 dstintf=\"unknown-0\" dstintfrole=\"undefined\" sessionid=33 proto=58 action=\"accept\" policyid=0 policytype=\"policy\" service=\"icmp6/143/0\" trandisp=\"noop\" duration=0 sentbyte=0 rcvdbyte=0 sentpkt=0 rcvdpkt=0 appcat=\"unscanned\"";
 
         String log2 = "date=2025-06-25 time=11:47:33 eventtime=1750834053778841516 tz=\"+0500\" logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" srcip=192.168.10.2 srcname=\"DESKTOP-PV8UUES\" srcport=56479 srcintf=\"port1\" srcintfrole=\"lan\" dstip=23.197.105.167 dstport=80 dstintf=\"port3\" dstintfrole=\"wan\" srccountry=\"Reserved\" dstcountry=\"United States\" sessionid=252 proto=6 action=\"server-rst\" policyid=1 policytype=\"policy\" poluuid=\"dfcea2d4-4fed-51f0-c05e-b22d53224d20\" policyname=\"internet\" service=\"HTTP\" trandisp=\"snat\" transip=192.168.186.135 transport=56479 duration=38 sentbyte=252 rcvdbyte=14989 sentpkt=6 rcvdpkt=15 appcat=\"unscanned\" utmaction=\"block\" countweb=1 srchwvendor=\"VMware\" osname=\"Windows\" srcswversion=\"10 / 2016\" mastersrcmac=\"00:0c:29:fc:44:8c\" srcmac=\"00:0c:29:fc:44:8c\" srcserver=0 utmref=65535-56";
 
@@ -30,7 +35,39 @@ public class SimpleValidator {
         System.out.println(split2.length);
         System.out.println(split3.length);
         System.out.println(split4.length);
-        System.out.println(split5.length);
-    }
+        System.out.println(split5.length);*/
+         String filePath = "\"C:\\1jahon\\darslar\\markaz amaliyot\\disk-traffic-forward-2025-06-27_1020.log\"";
 
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            List<String> logs = new ArrayList<>();
+
+            StringBuilder currentLog = new StringBuilder();
+
+            for (String line : lines) {
+                if (line.startsWith("date=")) {
+                    if (currentLog.length() > 0) {
+                        logs.add(currentLog.toString());
+                        currentLog.setLength(0);
+                    }
+                }
+                currentLog.append(line).append(" ");
+            }
+
+            // So‘nggi logni ham qo‘shamiz
+            if (currentLog.length() > 0) {
+                logs.add(currentLog.toString());
+            }
+
+            // Natijani chiqarish
+            for (int i = 0; i < logs.size(); i++) {
+                System.out.println("Log #" + (i + 1));
+                System.out.println(logs.get(i));
+                System.out.println("----------------------------------------------------");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
