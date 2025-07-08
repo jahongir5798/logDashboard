@@ -8,14 +8,15 @@ import uz.jahonservice.dashboard.exception.MyException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Slf4j
 @Component
 public class LogParser {
 
-    public  Map<String, Object> parseLog(String log) {
-        LogEntity logEntity = new LogEntity();
+
+    public Map<String, Object> parseLog(String log) {
         Map<String, Object> result = new LinkedHashMap<>();
 
         String regex = "(\\w+)=((\"[^\"]*\")|[^\\s\"]+)";
@@ -76,11 +77,26 @@ public class LogParser {
     public LogEntity toLogEntity(Map<String, Object> keyValueLog, LogEntity logEntity) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        DateTimeFormatter shortFormatter = DateTimeFormatter.ofPattern("H:mm");
 
         try {
+            logEntity.setDate(keyValueLog.containsKey("date") ? LocalDate.parse(keyValueLog.get("date").toString(), dateFormatter) : null);
 
-            logEntity.setDate(LocalDate.parse((keyValueLog.getOrDefault("date", "null")).toString(), dateFormatter));
-            logEntity.setTime(LocalTime.parse((keyValueLog.getOrDefault("time", "null")).toString(), timeFormatter));
+            String timeStr = keyValueLog.get("time") != null ? keyValueLog.get("time").toString() : null;
+            if (timeStr != null) {
+                try {
+                    if (timeStr.chars().filter(ch -> ch == ':').count() == 2) {
+                        logEntity.setTime(LocalTime.parse(timeStr, timeFormatter));
+                    } else {
+                        logEntity.setTime(LocalTime.parse(timeStr, shortFormatter));
+                    }
+                } catch (DateTimeParseException e) {
+                    logEntity.setTime(null);
+                }
+            } else {
+                logEntity.setTime(null);
+            }
+
             logEntity.setEventTime(keyValueLog.containsKey("eventtime") ? Long.parseLong(keyValueLog.get("eventtime").toString()) : null);
             logEntity.setTz(keyValueLog.getOrDefault("tz", "null").toString());
             logEntity.setLogId(keyValueLog.getOrDefault("logid", "null").toString());
@@ -130,8 +146,8 @@ public class LogParser {
             logEntity.setSrcMac(keyValueLog.getOrDefault("srcmac", "null").toString());
             logEntity.setSrcserver(keyValueLog.containsKey("srcserver") ? Long.parseLong(keyValueLog.get("srcserver").toString()) : null);
 
-        }catch (Exception e){
-            throw new MyException(e.getMessage() + "nul pointer otgan bulsa LOng tiplilarni joylashda muammo bor ");
+        } catch (Exception e) {
+            throw new MyException(e.getMessage() + " nul pointer otgan bulsa Long tiplilarni joylashda muammo bor ");
         }
 
         return logEntity;
