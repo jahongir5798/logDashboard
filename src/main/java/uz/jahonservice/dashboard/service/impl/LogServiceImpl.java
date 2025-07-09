@@ -127,6 +127,7 @@ public class LogServiceImpl implements LogService {
 //        }
 //    }    //
 
+
     @Override
     public ApiResponse<LogDto> uploadFromText(String text) {
 
@@ -156,68 +157,39 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ApiResponse<Page<LogDto>> getAllLog(Integer page, Integer size) {
+    public ApiResponse<Page<LogDto>> getAllLog(Integer page, Integer size, LocalDate startDate, LocalDate endDate, String ip) {
 
-        if (size == 0) size = 10;
-
-        try {
-            Pageable pageable = PageRequest.of(page, size);
-
-            Page<LogEntity> all = logRepository.findAll(pageable);
-            Page<LogDto> response = all.map(logMapper::toDto);
-
-            return ApiResponse.<Page<LogDto>>builder()
-                    .code(0)
-                    .message("Successfully retrieved all logs")
-                    .success(true)
-                    .log(response)
-                    .build();
-        } catch (Exception e) {
-            throw new DatabaseException("Database exception while getting log");
-        }
-
-    }
-
-    @Override
-    public ApiResponse<Page<LogDto>> getWithTime(Integer page, Integer size, LocalDate start, LocalDate end) {
-
-        if (size == 0) size = 10;
+        if (page == null) page = 0;
+        if (size == null) size = 25;
+        if (startDate == null) startDate = LocalDate.now().minusDays(7);
+        if (endDate == null) endDate = LocalDate.now();
 
         try {
-            Page<LogEntity> allByDateBetween = logRepository.findAllByDateBetween(start, end, PageRequest.of(page,size));
-            Page<LogDto> response = allByDateBetween.map(logMapper::toDto);
-            return ApiResponse.<Page<LogDto>>builder()
-                    .code(0)
-                    .message("Successfully retrieved all logs")
-                    .success(true)
-                    .log(response)
-                    .build();
-        } catch (Exception e) {
-            throw new DatabaseException("Database exception while getting log");
-        }
-    }
-
-    @Override
-    public ApiResponse<Map<Date, Integer>> getDailyLog(LocalDate start, LocalDate end) {
-        try {
-            Timestamp startTime = Timestamp.valueOf(start.atStartOfDay());
-            Timestamp endTime = Timestamp.valueOf(end.atStartOfDay().plusHours(23).minusMinutes(59).plusSeconds(59));
-            List<Object[]> dailylog = this.logRepository.countLogsByDateRange(startTime, endTime);
-
-            Map<java.sql.Date, Integer> map = new HashMap<>();
-            for (Object[] row : dailylog) {
-                map.put((Date) row[0], ((Number) row[1]).intValue());
+            if (ip == null) {
+                Page<LogEntity> allByDateBetween = logRepository.findAllByDateBetween(startDate, endDate, PageRequest.of(page, size));
+                Page<LogDto> response = allByDateBetween.map(logMapper::toDto);
+                return ApiResponse.<Page<LogDto>>builder()
+                        .code(0)
+                        .message("Successfully retrieved all logs")
+                        .success(true)
+                        .log(response)
+                        .build();
+            } else {
+                Pageable pageable = PageRequest.of(page, size);
+                Page<LogEntity> allByDateBetweenAndSrcIPContainingIgnoreCase = logRepository.findAllByDateBetweenAndSrcIPContainingIgnoreCase(startDate, endDate, ip, pageable);
+                Page<LogDto> response = allByDateBetweenAndSrcIPContainingIgnoreCase.map(logMapper::toDto);
+                return ApiResponse.<Page<LogDto>>builder()
+                        .code(0)
+                        .message("Successfully retrieved all logs")
+                        .success(true)
+                        .log(response)
+                        .build();
             }
-            return ApiResponse.<Map<Date, Integer>>builder()
-                    .code(0)
-                    .message("Successfully retrieved all logs")
-                    .success(true)
-                    .log(map)
-                    .build();
         } catch (Exception e) {
-            throw new DatabaseException("Database exception while getting daily log");
+            throw new DatabaseException("Database exception while getting log");
         }
     }
+
 
     @Override
     public ApiResponse<Map<String, Integer>> getServiceCount(LocalDate startDate, LocalDate endDate) {
@@ -263,6 +235,70 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
+    public ApiResponse<Map<Date, Integer>> getDailyLog(LocalDate start, LocalDate end) {
+        try {
+            Timestamp startTime = Timestamp.valueOf(start.atStartOfDay());
+            Timestamp endTime = Timestamp.valueOf(end.atStartOfDay().plusHours(23).minusMinutes(59).plusSeconds(59));
+            List<Object[]> dailylog = this.logRepository.countLogsByDateRange(startTime, endTime);
+
+            Map<java.sql.Date, Integer> map = new HashMap<>();
+            for (Object[] row : dailylog) {
+                map.put((Date) row[0], ((Number) row[1]).intValue());
+            }
+            return ApiResponse.<Map<Date, Integer>>builder()
+                    .code(0)
+                    .message("Successfully retrieved all logs")
+                    .success(true)
+                    .log(map)
+                    .build();
+        } catch (Exception e) {
+            throw new DatabaseException("Database exception while getting daily log");
+        }
+    }
+
+     /* @Override
+    public ApiResponse<Page<LogDto>> getAllLog1(Integer page, Integer size) {
+
+        if (size == 0) size = 10;
+
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+
+            Page<LogEntity> all = logRepository.findAll(pageable);
+            Page<LogDto> response = all.map(logMapper::toDto);
+
+            return ApiResponse.<Page<LogDto>>builder()
+                    .code(0)
+                    .message("Successfully retrieved all logs")
+                    .success(true)
+                    .log(response)
+                    .build();
+        } catch (Exception e) {
+            throw new DatabaseException("Database exception while getting log");
+        }
+
+    }*/
+
+     /*  @Override
+    public ApiResponse<Page<LogDto>> getWithTime(Integer page, Integer size, LocalDate start, LocalDate end) {
+
+        if (size == 0) size = 10;
+
+        try {
+            Page<LogEntity> allByDateBetween = logRepository.findAllByDateBetween(start, end, PageRequest.of(page, size));
+            Page<LogDto> response = allByDateBetween.map(logMapper::toDto);
+            return ApiResponse.<Page<LogDto>>builder()
+                    .code(0)
+                    .message("Successfully retrieved all logs")
+                    .success(true)
+                    .log(response)
+                    .build();
+        } catch (Exception e) {
+            throw new DatabaseException("Database exception while getting log");
+        }
+    }*/
+
+     /* @Override
     public ApiResponse<Page<LogDto>> getSortedListIp(Integer page, Integer size, String ip, LocalDate startTime, LocalDate endTime) {
         try {
             Pageable pageable = PageRequest.of(page, size);
@@ -278,7 +314,5 @@ public class LogServiceImpl implements LogService {
             throw new DatabaseException("Database exception while getting sorted list ip");
         }
 
-    }
-
-
+    }*/
 }
