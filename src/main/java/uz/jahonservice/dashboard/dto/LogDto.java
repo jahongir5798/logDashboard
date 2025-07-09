@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 public class LogDto {
 
-    private UUID uuid;
+    private UUID id;
 
     //todo: umumiy vaqt va log tavsilotlari
     private LocalDate date;   //log yozilgan kun

@@ -156,13 +156,12 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ApiResponse<Page<LogDto>> getAllLog(PageRequestDto dto) {
+    public ApiResponse<Page<LogDto>> getAllLog(Integer page, Integer size) {
 
-        if (dto.getPage() == 0) dto.setPage(1);
-        if (dto.getSize() == 0) dto.setSize(10);
+        if (size == 0) size = 10;
 
         try {
-            Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize());
+            Pageable pageable = PageRequest.of(page, size);
 
             Page<LogEntity> all = logRepository.findAll(pageable);
             Page<LogDto> response = all.map(logMapper::toDto);
@@ -180,13 +179,12 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ApiResponse<Page<LogDto>> getWithTime(PageRequestDto dto, LocalDate start, LocalDate end) {
+    public ApiResponse<Page<LogDto>> getWithTime(Integer page, Integer size, LocalDate start, LocalDate end) {
 
-        if (dto.getPage() == 0) dto.setPage(1);
-        if (dto.getSize() == 0) dto.setSize(10);
+        if (size == 0) size = 10;
 
         try {
-            Page<LogEntity> allByDateBetween = logRepository.findAllByDateBetween(start, end, PageRequest.of(dto.getPage(), dto.getSize()));
+            Page<LogEntity> allByDateBetween = logRepository.findAllByDateBetween(start, end, PageRequest.of(page,size));
             Page<LogDto> response = allByDateBetween.map(logMapper::toDto);
             return ApiResponse.<Page<LogDto>>builder()
                     .code(0)
@@ -265,9 +263,9 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ApiResponse<Page<LogDto>> getSortedListIp(PageRequestDto dto, String ip, LocalDate startTime, LocalDate endTime) {
+    public ApiResponse<Page<LogDto>> getSortedListIp(Integer page, Integer size, String ip, LocalDate startTime, LocalDate endTime) {
         try {
-            Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize());
+            Pageable pageable = PageRequest.of(page, size);
             Page<LogEntity> allByDateBetweenAndSrcIPContainingIgnoreCase = logRepository.findAllByDateBetweenAndSrcIPContainingIgnoreCase(startTime, endTime, ip, pageable);
             Page<LogDto> response = allByDateBetweenAndSrcIPContainingIgnoreCase.map(logMapper::toDto);
             return ApiResponse.<Page<LogDto>>builder()

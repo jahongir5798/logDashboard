@@ -9,7 +9,7 @@ public  class LogMapper {
 
     public  LogDto toDto(LogEntity logEntity){
         LogDto logDto = new LogDto();
-        logDto.setUuid(logEntity.getUuid());
+        logDto.setId(logEntity.getUuid());
         logDto.setDate(logEntity.getDate());
         logDto.setTime(logEntity.getTime());
         logDto.setEventTime(logEntity.getEventTime());

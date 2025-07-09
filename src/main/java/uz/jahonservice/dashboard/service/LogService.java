@@ -17,15 +17,15 @@ public interface LogService {
     ApiResponse<LogDto> uploadFromText(String text);
 
 
-    ApiResponse<Page<LogDto>> getAllLog(PageRequestDto dto);
+    ApiResponse<Page<LogDto>> getAllLog(Integer page, Integer size);
 
-    ApiResponse<Page<LogDto>> getWithTime(PageRequestDto dto, LocalDate start, LocalDate end);
+    ApiResponse<Page<LogDto>> getWithTime(Integer page, Integer size, LocalDate start, LocalDate end);
 
     ApiResponse<Map<Date, Integer>> getDailyLog(LocalDate start, LocalDate end);
 
     ApiResponse<Map<String, Integer>> getDstCountry(LocalDate startTime, LocalDate endDate);
 
-    ApiResponse<Page<LogDto>> getSortedListIp(PageRequestDto dto, String ip, LocalDate startTime, LocalDate endTime);
+    ApiResponse<Page<LogDto>> getSortedListIp(Integer page, Integer size, String ip, LocalDate startTime, LocalDate endTime);
 
     ApiResponse<Map<String, Integer>> getServiceCount(LocalDate startDate, LocalDate endDate);
 }

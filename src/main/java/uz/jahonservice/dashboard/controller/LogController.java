@@ -47,21 +47,25 @@ public class LogController {
     }
 
     @GetMapping("get-all-log")
-    public ApiResponse<Page<LogDto>> getAllLog(@RequestBody PageRequestDto dto) {
+    public ApiResponse<Page<LogDto>> getAllLog(
+            @RequestParam Integer page,
+            @RequestParam Integer size
+    ) {
         log.info("log controller get-all-log invoked");
-        ApiResponse<Page<LogDto>> allLog = logService.getAllLog(dto);
+        ApiResponse<Page<LogDto>> allLog = logService.getAllLog(page, size);
         log.info("log controller get-all-log response");
         return allLog;
     }
 
     @GetMapping("get-with-time")
     public ApiResponse<Page<LogDto>> getWithTime(
-            @RequestBody PageRequestDto dto,
+            @RequestParam Integer page,
+            @RequestParam Integer size,
             @RequestParam LocalDate start,
             @RequestParam LocalDate end
     ) {
         log.info("log controller get-with-time invoked");
-        ApiResponse<Page<LogDto>> withTime = logService.getWithTime(dto, start, end);
+        ApiResponse<Page<LogDto>> withTime = logService.getWithTime(page, size, start, end);
         log.info("log controller get-with-time response");
         return withTime;
     }
@@ -102,13 +106,14 @@ public class LogController {
 
     @GetMapping("get-sorted-ip-log")
     public ApiResponse<Page<LogDto>> getSortedIpLog(
-            @RequestBody PageRequestDto dto,
+            @RequestParam Integer page,
+            @RequestParam Integer size,
             @RequestParam String ip,
             @RequestParam LocalDate startTime,
             @RequestParam LocalDate endTime
     ) {
         log.info("log control get sorted ip logs invoked");
-        ApiResponse<Page<LogDto>> sortedListIp = logService.getSortedListIp(dto, ip, startTime, endTime);
+        ApiResponse<Page<LogDto>> sortedListIp = logService.getSortedListIp(page, size, ip, startTime, endTime);
         log.info("log control get sorted ip logs response");
         return sortedListIp;
     }
