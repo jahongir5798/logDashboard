@@ -107,11 +107,11 @@ public class LogController {
 
     @GetMapping("get-dst-country")
     public ApiResponse<Map<String, Integer>> dstCountry(
-            @RequestParam LocalDate startTime,
+            @RequestParam LocalDate startDate,
             @RequestParam LocalDate endDate
     ){
         log.info("log control get dst country invoked");
-        ApiResponse<Map<String, Integer>> dstCountry = logService.getDstCountry(startTime, endDate);
+        ApiResponse<Map<String, Integer>> dstCountry = logService.getDstCountry(startDate, endDate);
         log.info("log control get dst country response");
         return dstCountry;
     }
