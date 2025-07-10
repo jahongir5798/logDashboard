@@ -45,7 +45,7 @@ public class LogController {
         return response;
     }
 
-    @GetMapping("GET-ALL-LOG")
+    @GetMapping("get-all-log")
     public ApiResponse<Page<LogDto>> getAllLog(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
@@ -126,49 +126,5 @@ public class LogController {
         log.info("log control get-services-count response");
         return serviceCount;
     }
-
-
-
-   /* @GetMapping("get-all-log")
-    public ApiResponse<org.hibernate.query.Page> getAllLog(
-            @RequestParam Integer page,
-            @RequestParam Integer size,
-            @RequestParam String pattern
-    ) {
-        log.info("log controller get all log method invoked");
-        ApiResponse<org.hibernate.query.Page<LogDto>> response = logService.getAllLog(page, size, pattern);
-        log.info("log controller get all log method response");
-        return response;
-    }
-
-    @GetMapping("get-all-log-with-time")
-    public PageResponse<List<LogDto>> getAllLogWithTime(
-            @RequestParam Integer size,
-            @RequestParam Integer page,
-            @RequestParam LocalDateTime startTime,
-            @RequestParam LocalDateTime endTime
-    ){
-        log.info("log controller get all log with-time method invoked");
-        PageResponse<List<LogDto>> allLogWithTime = logService.getAllLogWithTime(size, page, startTime, endTime);
-        log.info("log controller get all log with-time method response");
-        return allLogWithTime;
-    }*/
-
-    /*@GetMapping("GET")
-    public ApiResponse<Page<LogEntity>> getLog(@RequestBody PageRequestDto dto){
-
-        PageRequest pageable = PageRequest.of(dto.getPage(), dto.getSize());
-
-        Page<LogEntity> all = logRepository.findAll(pageable);
-        return ApiResponse.<Page<LogEntity>>builder()
-                .code(0)
-                .message("true")
-                .success(true)
-                .errorList(null)
-                .log(all)
-                .build();
-
-    }*/
-
 
 }
