@@ -235,11 +235,9 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public ApiResponse<Map<Date, Integer>> getDailyLog(LocalDate start, LocalDate end) {
+    public ApiResponse<Map<Date, Integer>> getDailyLog(Integer range) {
         try {
-            Timestamp startTime = Timestamp.valueOf(start.atStartOfDay());
-            Timestamp endTime = Timestamp.valueOf(end.atStartOfDay().plusHours(23).minusMinutes(59).plusSeconds(59));
-            List<Object[]> dailylog = this.logRepository.countLogsByDateRange(startTime, endTime);
+            List<Object[]> dailylog = this.logRepository.countLogsByDateRange(Timestamp.valueOf(LocalDateTime.now().minusDays(range)), Timestamp.valueOf(LocalDateTime.now()));
 
             Map<java.sql.Date, Integer> map = new HashMap<>();
             for (Object[] row : dailylog) {

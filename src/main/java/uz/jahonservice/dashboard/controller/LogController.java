@@ -96,11 +96,10 @@ public class LogController {
 
      @GetMapping("get-daily-log")
     public ApiResponse<Map<Date, Integer>> dailyLog(
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate
+            @RequestParam Integer range
     ) {
         log.info("log control get daily logs invoked");
-        ApiResponse<Map<Date, Integer>> dailyLog = logService.getDailyLog(startDate, endDate);
+        ApiResponse<Map<Date, Integer>> dailyLog = logService.getDailyLog(range);
         log.info("log control get daily logs response");
         return dailyLog;
     }

@@ -15,7 +15,7 @@ public interface LogService {
 
     ApiResponse<LogDto> uploadFromText(String text);
 
-    ApiResponse<Map<Date, Integer>> getDailyLog(LocalDate start, LocalDate end);
+    ApiResponse<Map<Date, Integer>> getDailyLog(Integer range);
 
     ApiResponse<Map<String, Integer>> getDstCountry(LocalDate startTime, LocalDate endDate);
 
