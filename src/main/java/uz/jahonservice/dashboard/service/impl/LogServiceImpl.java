@@ -28,10 +28,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -239,7 +236,12 @@ public class LogServiceImpl implements LogService {
         try {
             List<Object[]> dailylog = this.logRepository.countLogsByDateRange(Timestamp.valueOf(LocalDateTime.now().minusDays(range)), Timestamp.valueOf(LocalDateTime.now()));
 
-            Map<java.sql.Date, Integer> map = new HashMap<>();
+            Map<java.sql.Date, Integer> map = new LinkedHashMap<>();
+            for (int i = 0; i < range; i++) {
+                map.put( Date.valueOf(LocalDate.now().minusDays(range - i).toString()) , 0);
+            }
+
+
             for (Object[] row : dailylog) {
                 map.put((Date) row[0], ((Number) row[1]).intValue());
             }
